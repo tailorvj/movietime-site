@@ -1,0 +1,116 @@
+---
+export const prerender = false
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { messages } from '../../i18n'
+
+const locale = 'he'
+const t = messages(locale)
+const videoId = import.meta.env.PUBLIC_VIMEO_VIDEO_ID ?? ''
+const sessionTemplate = t.watch.sessionExpiringIn
+---
+
+<BaseLayout locale={locale} title={t.watch.title} vimeoPreconnect={!!videoId}>
+  <div id="watch-loading">
+    <p class="text-zinc-300">{t.watch.checking}</p>
+  </div>
+
+  <div id="watch-player" class="hidden">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">{t.watch.title}</h1>
+      <button
+        type="button"
+        id="watch-logout"
+        class="rounded-md border border-zinc-700 px-3 py-1.5 text-sm text-zinc-200 hover:bg-zinc-800"
+      >
+        {t.watch.logout}
+      </button>
+    </div>
+    <p id="watch-countdown" class="mt-2 text-xs text-zinc-500"></p>
+    {videoId ? (
+      <div class="mt-6 aspect-video overflow-hidden rounded-md bg-black">
+        <iframe
+          id="vimeo-frame"
+          src={`https://player.vimeo.com/video/${videoId}?dnt=1`}
+          title={t.watch.title}
+          class="h-full w-full"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        />
+      </div>
+    ) : (
+      <p class="mt-6 rounded-md border border-zinc-800 bg-zinc-900 p-4 text-sm text-zinc-400">
+        {t.watch.missingVideo}
+      </p>
+    )}
+  </div>
+</BaseLayout>
+
+<script define:vars={{ locale, sessionTemplate, homePath: `/${locale}` }}>
+  const loading = document.getElementById('watch-loading')
+  const player = document.getElementById('watch-player')
+  const countdown = document.getElementById('watch-countdown')
+  const logoutBtn = document.getElementById('watch-logout')
+  if (!loading || !player || !countdown || !logoutBtn) throw new Error('watch page missing')
+
+  let expiresAt = null
+  let tick = null
+
+  function formatCountdown(seconds) {
+    return sessionTemplate.replace('{{seconds}}', String(seconds))
+  }
+
+  function showPlayer() {
+    loading.classList.add('hidden')
+    player.classList.remove('hidden')
+  }
+
+  function startCountdown() {
+    if (expiresAt === null) return
+    const update = () => {
+      const remaining = Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000))
+      countdown.textContent = formatCountdown(remaining)
+      if (remaining <= 0) {
+        void logout()
+      }
+    }
+    update()
+    tick = window.setInterval(update, 1000)
+  }
+
+  async function logout() {
+    if (tick) window.clearInterval(tick)
+    await fetch('/api/logout', { method: 'POST', credentials: 'include' })
+    sessionStorage.removeItem('mt-watch-ready')
+    window.location.replace(homePath)
+  }
+
+  async function ensureAuth() {
+    const skipCheck = sessionStorage.getItem('mt-watch-ready') === '1'
+    if (skipCheck) {
+      sessionStorage.removeItem('mt-watch-ready')
+      showPlayer()
+      const res = await fetch('/api/check-auth', { credentials: 'include' })
+      const data = await res.json()
+      if (data.authenticated) {
+        expiresAt = data.expiresAt
+        startCountdown()
+        return
+      }
+      window.location.replace(homePath)
+      return
+    }
+
+    const res = await fetch('/api/check-auth', { credentials: 'include' })
+    const data = await res.json()
+    if (!data.authenticated) {
+      window.location.replace(homePath)
+      return
+    }
+    expiresAt = data.expiresAt
+    showPlayer()
+    startCountdown()
+  }
+
+  logoutBtn.addEventListener('click', () => void logout())
+  void ensureAuth()
+</script>

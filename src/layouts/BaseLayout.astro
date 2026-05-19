@@ -1,0 +1,42 @@
+---
+import '../styles/global.css'
+import type { Locale } from '../i18n'
+import { messages } from '../i18n'
+import LocaleSwitcher from '../components/LocaleSwitcher.astro'
+
+interface Props {
+  locale: Locale
+  title?: string
+  vimeoPreconnect?: boolean
+}
+
+const { locale, title, vimeoPreconnect = false } = Astro.props
+const t = messages(locale)
+const pageTitle = title ?? t.landing.title
+const dir = locale === 'he' ? 'rtl' : 'ltr'
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Gett Movie Time — private screening access" />
+    <title>{pageTitle}</title>
+    {vimeoPreconnect && (
+      <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+    )}
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <header class="border-b border-zinc-800/60">
+      <div class="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-4">
+        <span class="text-sm font-semibold tracking-wide text-zinc-300">{t.brand}</span>
+        <LocaleSwitcher locale={locale} />
+      </div>
+    </header>
+    <main class="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-12">
+      <slot />
+    </main>
+  </body>
+</html>

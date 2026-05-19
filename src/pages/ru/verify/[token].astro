@@ -1,0 +1,84 @@
+---
+export const prerender = false
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { messages } from '../../../i18n'
+
+const locale = 'ru'
+const t = messages(locale)
+const { token } = Astro.params
+---
+
+<BaseLayout locale={locale} title={t.verify.loading}>
+  <p id="verify-status" class="text-zinc-300">{t.verify.loading}</p>
+  <div id="verify-error" class="hidden" role="alert">
+    <h1 class="text-2xl font-semibold text-rose-400">{t.verify.errorTitle}</h1>
+    <p id="verify-error-text" class="mt-3 text-zinc-300"></p>
+    <a href={`/${locale}`} class="mt-6 inline-block text-sm text-emerald-400 hover:underline">
+      {t.verify.back}
+    </a>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ token, locale, labels: t.verify }}>
+  const statusEl = document.getElementById('verify-status')
+  const errorBox = document.getElementById('verify-error')
+  const errorText = document.getElementById('verify-error-text')
+  if (!statusEl || !errorBox || !errorText) throw new Error('verify page missing')
+
+  let started = false
+
+  function showError(kind) {
+    statusEl.classList.add('hidden')
+    errorBox.classList.remove('hidden')
+    const map = {
+      used: labels.errorUsed,
+      expired: labels.errorExpired,
+      invalid: labels.errorInvalid,
+    }
+    errorText.textContent = map[kind] ?? labels.errorInvalid
+  }
+
+  async function checkAuth() {
+    const res = await fetch('/api/check-auth', { credentials: 'include' })
+    const data = await res.json()
+    if (data.authenticated) {
+      window.location.replace(`/${data.locale ?? locale}/watch`)
+      return true
+    }
+    return false
+  }
+
+  async function verify() {
+    if (started || !token) {
+      if (!token) showError('invalid')
+      return
+    }
+    started = true
+
+    try {
+      const res = await fetch(`/api/verify-token/${token}`, {
+        credentials: 'include',
+      })
+      const data = await res.json().catch(() => ({}))
+      if (res.ok && data.ok) {
+        sessionStorage.setItem('mt-watch-ready', '1')
+        window.location.replace(`/${data.locale ?? locale}/watch`)
+        return
+      }
+      if (data.error === 'token_already_used' || res.status === 409) {
+        if (await checkAuth()) return
+        showError('used')
+        return
+      }
+      if (data.error === 'token_expired' || res.status === 410) {
+        showError('expired')
+        return
+      }
+      showError('invalid')
+    } catch {
+      showError('invalid')
+    }
+  }
+
+  void verify()
+</script>
