@@ -1,0 +1,21 @@
+---
+import logoImg from '../../assets/images/landing/logo.png'
+import { messages } from '../../i18n'
+
+const t = messages('he')
+---
+
+<header class="ih-brand-header">
+  <div class="ih-brand-header__inner">
+    <a href="/he" aria-label={t.brand}>
+      <img
+        class="ih-brand-header__logo"
+        src={logoImg.src}
+        width={logoImg.width}
+        height={logoImg.height}
+        alt="ישראל חופשית"
+      />
+    </a>
+    <span class="ih-brand-header__title" aria-hidden="true">גט</span>
+  </div>
+</header>

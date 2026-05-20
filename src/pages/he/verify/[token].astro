@@ -1,6 +1,7 @@
 ---
 export const prerender = false
-import BaseLayout from '../../../layouts/BaseLayout.astro'
+import HebrewLayout from '../../../layouts/HebrewLayout.astro'
+import BrandPaperSection from '../../../components/brand/BrandPaperSection.astro'
 import { messages } from '../../../i18n'
 
 const locale = 'he'
@@ -8,18 +9,25 @@ const t = messages(locale)
 const { token } = Astro.params
 ---
 
-<BaseLayout locale={locale} title={t.verify.loading}>
-  <p id="verify-status" class="text-zinc-300">{t.verify.loading}</p>
-  <div id="verify-error" class="hidden" role="alert">
-    <h1 class="text-2xl font-semibold text-rose-400">{t.verify.errorTitle}</h1>
-    <p id="verify-error-text" class="mt-3 text-zinc-300"></p>
-    <a href={`/${locale}`} class="mt-6 inline-block text-sm text-emerald-400 hover:underline">
-      {t.verify.back}
-    </a>
-  </div>
-</BaseLayout>
+<HebrewLayout
+  locale={locale}
+  variant="app"
+  title={t.verify.pageTitle}
+  metaDescription={t.verify.metaDescription}
+>
+  <BrandPaperSection center>
+    <p id="verify-status" class="ih-body">{t.verify.loading}</p>
+    <div id="verify-error" class="ih-hidden" role="alert">
+      <h1 class="ih-callout">{t.verify.errorTitle}</h1>
+      <p id="verify-error-text" class="ih-body"></p>
+      <a href={`/${locale}`} class="ih-btn-primary" style="margin-top: 1.5rem;">
+        {t.verify.back}
+      </a>
+    </div>
+  </BrandPaperSection>
+</HebrewLayout>
 
-<script define:vars={{ token, locale, labels: t.verify }}>
+<script define:vars={{ token, locale, labels: t.verify, hiddenClass: 'ih-hidden' }}>
   const statusEl = document.getElementById('verify-status')
   const errorBox = document.getElementById('verify-error')
   const errorText = document.getElementById('verify-error-text')
@@ -28,8 +36,8 @@ const { token } = Astro.params
   let started = false
 
   function showError(kind) {
-    statusEl.classList.add('hidden')
-    errorBox.classList.remove('hidden')
+    statusEl.classList.add(hiddenClass)
+    errorBox.classList.remove(hiddenClass)
     const map = {
       used: labels.errorUsed,
       expired: labels.errorExpired,

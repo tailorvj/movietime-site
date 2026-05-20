@@ -1,0 +1,21 @@
+---
+import type { Locale } from '../../i18n'
+import { messages } from '../../i18n'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = messages(locale)
+---
+
+<section class="landing-story" aria-labelledby="landing-story-heading">
+  <div class="landing-story__inner">
+    <h2 id="landing-story-heading" class="ih-sr-only">{t.landing.storyHeading}</h2>
+    <p>{t.landing.storyP1}</p>
+    <p>{t.landing.storyP2}</p>
+    <p class="landing-story__callout">{t.landing.storyCallout}</p>
+    <p>{t.landing.storyP3}</p>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import logoImg from '../../assets/images/landing/logo.png'
+import LocaleSwitcher from '../LocaleSwitcher.astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<footer class:list={['ih-brand-footer', 'ih-paper-bg', className]}>
+  <img
+    class="ih-brand-footer__logo"
+    src={logoImg.src}
+    width={logoImg.width}
+    height={logoImg.height}
+    alt="ישראל חופשית"
+    loading="lazy"
+  />
+  <div class="ih-brand-footer__locale">
+    <LocaleSwitcher locale="he" variant="light" />
+  </div>
+</footer>

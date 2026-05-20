@@ -1,0 +1,14 @@
+---
+interface Props {
+  center?: boolean
+  class?: string
+}
+
+const { center = false, class: className } = Astro.props
+---
+
+<section class:list={['ih-paper-bg', className]}>
+  <div class:list={['ih-content', center && 'ih-content--center']}>
+    <slot />
+  </div>
+</section>

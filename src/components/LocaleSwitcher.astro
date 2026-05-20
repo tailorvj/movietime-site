@@ -4,20 +4,28 @@ import { LOCALES } from '../i18n'
 
 interface Props {
   locale: Locale
+  variant?: 'dark' | 'light'
 }
 
-const { locale } = Astro.props
+const { locale, variant = 'dark' } = Astro.props
 const path = Astro.url.pathname.replace(/^\/(he|ru)/, '') || ''
+const isLight = variant === 'light'
 ---
 
-<div class="flex gap-2 text-xs text-zinc-400">
+<div
+  class:list={[
+    'flex gap-2 text-xs',
+    isLight ? 'text-slate-600' : 'text-zinc-400',
+  ]}
+>
   {
     LOCALES.map((code) => (
       <a
         href={`/${code}${path}`}
         class:list={[
-          'hover:text-zinc-200',
-          code === locale && 'font-semibold text-emerald-400',
+          isLight ? 'hover:text-slate-900' : 'hover:text-zinc-200',
+          code === locale &&
+            (isLight ? 'font-semibold text-[#0370ba]' : 'font-semibold text-emerald-400'),
         ]}
       >
         {code.toUpperCase()}

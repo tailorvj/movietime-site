@@ -1,0 +1,18 @@
+---
+import BrandFooter from '../brand/BrandFooter.astro'
+---
+
+<BrandFooter class="landing-footer-compat" />
+
+<style>
+  /* Landing page: full-width footer padding matches story section gutters */
+  :global(.landing-footer-compat) {
+    padding: 2rem var(--ih-gutter) 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    :global(.landing-footer-compat) {
+      padding-inline: var(--ih-gutter-md);
+    }
+  }
+</style>

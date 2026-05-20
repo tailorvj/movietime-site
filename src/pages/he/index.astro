@@ -1,9 +1,17 @@
 ---
 export const prerender = true
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import HebrewLayout from '../../layouts/HebrewLayout.astro'
+import LandingHeader from '../../components/landing/LandingHeader.astro'
+import LandingTrailer from '../../components/landing/LandingTrailer.astro'
+import LandingStory from '../../components/landing/LandingStory.astro'
 import LandingForm from '../../components/LandingForm.astro'
+import LandingFooter from '../../components/landing/LandingFooter.astro'
 ---
 
-<BaseLayout locale="he">
+<HebrewLayout locale="he" variant="landing">
+  <LandingHeader />
+  <LandingTrailer locale="he" />
+  <LandingStory locale="he" />
   <LandingForm locale="he" />
-</BaseLayout>
+  <LandingFooter />
+</HebrewLayout>

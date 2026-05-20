@@ -1,0 +1,234 @@
+/* Israel Hofsheet / Gett — shared Hebrew branding */
+
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;600;700;800&display=swap');
+
+:root {
+  --ih-primary-blue: #0370ba;
+  --ih-campaign-red: #e30613;
+  --ih-text-body: #1e293b;
+  --ih-text-muted: #64748b;
+  --ih-text-on-blue: #ffffff;
+  --ih-font-hebrew: 'Assistant', 'Heebo', 'Arial', sans-serif;
+  --ih-font-hebrew-bold: 'Assistant', 'Heebo', 'Arial', sans-serif;
+  --ih-gutter: 5%;
+  --ih-gutter-md: 8%;
+  --ih-max-content: 42rem;
+}
+
+.ih-page {
+  margin: 0;
+  min-height: 100%;
+  background: #ffffff;
+  color: var(--ih-text-body);
+  font-family: var(--ih-font-hebrew);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ih-page[dir='rtl'] {
+  text-align: right;
+}
+
+.ih-page[dir='ltr'] {
+  text-align: left;
+}
+
+.ih-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.ih-main--app {
+  flex: 1;
+}
+
+.ih-paper-bg {
+  background-image: url('../assets/images/landing/body-background-paper-texture.png');
+  background-size: cover;
+  background-position: center top;
+}
+
+.ih-content {
+  max-width: var(--ih-max-content);
+  margin-inline: auto;
+  padding: 2rem var(--ih-gutter) 2.5rem;
+}
+
+.ih-content--center {
+  text-align: center;
+}
+
+.ih-title {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--ih-text-body);
+}
+
+.ih-body {
+  margin: 0 0 1rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ih-text-body);
+}
+
+.ih-muted {
+  color: var(--ih-text-muted);
+  font-size: 0.875rem;
+}
+
+.ih-callout {
+  margin: 1.5rem 0;
+  padding: 1rem 1.125rem;
+  background: var(--ih-campaign-red);
+  color: #ffffff;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.ih-btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--ih-primary-blue);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ih-btn-primary:hover {
+  background: #f0f7ff;
+}
+
+.ih-btn-secondary {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--ih-primary-blue);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ih-primary-blue);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ih-btn-secondary:hover {
+  background: rgba(3, 112, 186, 0.08);
+}
+
+.ih-alert {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.125rem;
+  border: 2px solid var(--ih-primary-blue);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.ih-video-frame {
+  margin-top: 1.5rem;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 4px solid var(--ih-campaign-red);
+  background: #000000;
+}
+
+.ih-video-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.ih-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ih-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ih-hidden {
+  display: none;
+}
+
+/* Compact app shell header */
+.ih-brand-header {
+  padding: 1rem var(--ih-gutter);
+  background: #ffffff;
+  border-bottom: 3px solid var(--ih-primary-blue);
+}
+
+.ih-brand-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--ih-max-content);
+  margin-inline: auto;
+}
+
+.ih-brand-header__logo {
+  display: block;
+  width: min(10rem, 45vw);
+  height: auto;
+}
+
+.ih-brand-header__title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--ih-primary-blue);
+}
+
+/* Shared footer */
+.ih-brand-footer {
+  padding: 2rem var(--ih-gutter) 2.5rem;
+  text-align: center;
+}
+
+.ih-brand-footer__logo {
+  display: block;
+  width: min(16rem, 70%);
+  height: auto;
+  margin-inline: auto;
+}
+
+.ih-brand-footer__locale {
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .ih-content,
+  .ih-brand-header,
+  .ih-brand-footer {
+    padding-inline: var(--ih-gutter-md);
+  }
+
+  .ih-title {
+    font-size: 2rem;
+  }
+
+  .ih-body,
+  .ih-callout {
+    font-size: 1.125rem;
+  }
+}

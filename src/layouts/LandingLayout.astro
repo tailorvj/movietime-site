@@ -1,0 +1,15 @@
+---
+import HebrewLayout from './HebrewLayout.astro'
+
+interface Props {
+  locale: 'he'
+  title?: string
+  metaDescription?: string
+}
+
+const { locale, title, metaDescription } = Astro.props
+---
+
+<HebrewLayout locale={locale} variant="landing" title={title} metaDescription={metaDescription}>
+  <slot />
+</HebrewLayout>

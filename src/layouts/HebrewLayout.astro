@@ -1,0 +1,52 @@
+---
+import '../styles/global.css'
+import '../styles/branding.css'
+import '../styles/landing.css'
+import { messages } from '../i18n'
+import BrandHeader from '../components/brand/BrandHeader.astro'
+import BrandFooter from '../components/brand/BrandFooter.astro'
+
+interface Props {
+  locale: 'he'
+  variant: 'landing' | 'app'
+  title?: string
+  metaDescription?: string
+  vimeoPreconnect?: boolean
+}
+
+const { locale, variant, title, metaDescription, vimeoPreconnect = false } = Astro.props
+const t = messages(locale)
+const pageTitle = title ?? t.landing.pageTitle
+const description = metaDescription ?? t.landing.metaDescription
+---
+
+<!doctype html>
+<html lang={locale} dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    {vimeoPreconnect && (
+      <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+    )}
+  </head>
+  <body class="ih-page flex min-h-screen flex-col" dir="rtl">
+    {
+      variant === 'landing' ? (
+        <main class="landing-main">
+          <slot />
+        </main>
+      ) : (
+        <>
+          <BrandHeader />
+          <main class="ih-main ih-main--app flex flex-1 flex-col">
+            <slot />
+          </main>
+          <BrandFooter />
+        </>
+      )
+    }
+  </body>
+</html>

@@ -1,6 +1,7 @@
 ---
 export const prerender = true
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import HebrewLayout from '../../layouts/HebrewLayout.astro'
+import BrandPaperSection from '../../components/brand/BrandPaperSection.astro'
 import { messages } from '../../i18n'
 
 const locale = 'he'
@@ -8,15 +9,19 @@ const t = messages(locale)
 const contact = import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'contact@example.com'
 ---
 
-<BaseLayout locale={locale} title={t.unavailable.title}>
-  <h1 class="text-2xl font-semibold">{t.unavailable.title}</h1>
-  <p class="mt-3 text-zinc-300">{t.unavailable.body}</p>
-  <p class="mt-6">
-    <a
-      href={`mailto:${contact}`}
-      class="inline-block rounded-md bg-emerald-400 px-4 py-2 font-semibold text-black hover:bg-emerald-300"
-    >
-      {t.unavailable.contact}
-    </a>
-  </p>
-</BaseLayout>
+<HebrewLayout
+  locale={locale}
+  variant="app"
+  title={t.unavailable.pageTitle}
+  metaDescription={t.unavailable.metaDescription}
+>
+  <BrandPaperSection center>
+    <h1 class="ih-title">{t.unavailable.title}</h1>
+    <p class="ih-body">{t.unavailable.body}</p>
+    <p style="margin-top: 1.5rem;">
+      <a href={`mailto:${contact}`} class="ih-btn-primary">
+        {t.unavailable.contact}
+      </a>
+    </p>
+  </BrandPaperSection>
+</HebrewLayout>

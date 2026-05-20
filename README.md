@@ -24,15 +24,15 @@ npm run build
 
 Set these in the Netlify UI for production (and in `.env` for local dev):
 
-| Variable | Purpose |
-| -------- | ------- |
-| `APP_URL` | Public site URL (no trailing slash) |
-| `COOKIE_SECRET` | Session cookie signing (required in production) |
-| `EMAIL_HASH_SALT` | Salt for hashed email storage (required in production) |
-| `RESEND_API_KEY` | Transactional email (optional locally — access URLs are logged) |
-| `EMAIL_FROM` | Sender address for Resend |
-| `PUBLIC_VIMEO_VIDEO_ID` | Vimeo video id on the watch page |
-| `PUBLIC_CONTACT_EMAIL` | Contact address on the geo-unavailable page |
+| Variable                | Purpose                                                         |
+| ----------------------- | --------------------------------------------------------------- |
+| `APP_URL`               | Public site URL (no trailing slash)                             |
+| `COOKIE_SECRET`         | Session cookie signing (required in production)                 |
+| `EMAIL_HASH_SALT`       | Salt for hashed email storage (required in production)          |
+| `RESEND_API_KEY`        | Transactional email (optional locally — access URLs are logged) |
+| `EMAIL_FROM`            | Sender address for Resend                                       |
+| `PUBLIC_VIMEO_VIDEO_ID` | Vimeo video id on the watch page                                |
+| `PUBLIC_CONTACT_EMAIL`  | Contact address on the geo-unavailable page                     |
 
 ## Deployment
 

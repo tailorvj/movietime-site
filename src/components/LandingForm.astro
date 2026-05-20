@@ -10,44 +10,74 @@ const { locale } = Astro.props
 const t = messages(locale)
 ---
 
-<h1 class="text-3xl font-semibold leading-tight sm:text-4xl">{t.landing.title}</h1>
-<p class="mt-3 text-zinc-400">{t.landing.subtitle}</p>
+<section class="landing-form-section" aria-labelledby="landing-form-heading">
+  <div class="landing-form-section__inner">
+    <h2 id="landing-form-heading" class="ih-sr-only">{t.landing.formHeading}</h2>
 
-<div
-  id="landing-success"
-  class="mt-8 hidden rounded-md border border-emerald-700/40 bg-emerald-950/40 p-4"
-  role="status"
->
-  <h2 class="text-lg font-semibold text-emerald-300">{t.landing.successTitle}</h2>
-  <p class="mt-1 text-sm text-emerald-100/80">{t.landing.successBody}</p>
-</div>
+    <div id="landing-success" class="landing-form-success ih-hidden" role="status">
+      <h2>{t.landing.successTitle}</h2>
+      <p>{t.landing.successBody}</p>
+    </div>
 
-<form id="landing-form" class="mt-8 space-y-4" novalidate>
-  <label class="block text-sm">
-    <span class="block text-zinc-300">{t.landing.emailLabel}</span>
-    <input
-      type="email"
-      name="email"
-      required
-      autocomplete="email"
-      inputmode="email"
-      dir="ltr"
-      placeholder={t.landing.emailPlaceholder}
-      class="mt-2 w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 focus:border-emerald-400 focus:outline-none"
-    />
-  </label>
-  <p id="landing-error" class="hidden text-sm text-rose-400" role="alert"></p>
-  <p class="text-xs text-zinc-500">{t.landing.privacyNote}</p>
-  <button
-    type="submit"
-    id="landing-submit"
-    class="w-full rounded-md bg-emerald-400 px-4 py-2.5 font-semibold text-black hover:bg-emerald-300 disabled:opacity-60"
-  >
-    {t.landing.submit}
-  </button>
-</form>
+    <form id="landing-form" class="landing-form" novalidate>
+      <div class="landing-form-row landing-form-row--split">
+        <label>
+          <span class="landing-field-label">{t.landing.nameLabel}</span>
+          <input
+            type="text"
+            name="name"
+            autocomplete="name"
+            aria-describedby="landing-name-hint"
+          />
+        </label>
+        <label>
+          <span class="landing-field-label">{t.landing.phoneLabel}</span>
+          <input
+            type="tel"
+            name="phone"
+            autocomplete="tel"
+            inputmode="tel"
+            dir="ltr"
+            aria-describedby="landing-phone-hint"
+          />
+        </label>
+      </div>
+      <p id="landing-name-hint" class="ih-sr-only">{t.landing.nameHint}</p>
+      <p id="landing-phone-hint" class="ih-sr-only">{t.landing.phoneHint}</p>
+
+      <div class="landing-form-row">
+        <label>
+          <span class="landing-field-label">{t.landing.emailLabel}</span>
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            inputmode="email"
+            dir="ltr"
+            placeholder={t.landing.emailPlaceholder}
+          />
+        </label>
+      </div>
+
+      <label class="landing-form-consent">
+        <input type="checkbox" name="marketing" value="yes" />
+        <span>{t.landing.consentLabel}</span>
+      </label>
+
+      <p id="landing-error" class="landing-form-error ih-hidden" role="alert"></p>
+
+      <button type="submit" id="landing-submit" class="landing-form-submit">
+        {t.landing.submit}
+      </button>
+
+      <p class="landing-form-footnote">{t.landing.formFootnote}</p>
+    </form>
+  </div>
+</section>
 
 <script define:vars={{ locale, labels: t.landing }}>
+  const hiddenClass = 'ih-hidden'
   const form = document.getElementById('landing-form')
   const success = document.getElementById('landing-success')
   const errorEl = document.getElementById('landing-error')
@@ -60,7 +90,7 @@ const t = messages(locale)
     e.preventDefault()
     if (inFlight) return
     inFlight = true
-    errorEl.classList.add('hidden')
+    errorEl.classList.add(hiddenClass)
     submitBtn.disabled = true
     submitBtn.textContent = labels.submitting
 
@@ -74,8 +104,8 @@ const t = messages(locale)
       })
       const data = await res.json().catch(() => ({}))
       if (res.status === 202 || res.status === 200) {
-        form.classList.add('hidden')
-        success.classList.remove('hidden')
+        form.classList.add(hiddenClass)
+        success.classList.remove(hiddenClass)
         return
       }
       const key =
@@ -85,10 +115,10 @@ const t = messages(locale)
             ? labels.errorInvalidEmail
             : labels.errorGeneric
       errorEl.textContent = key
-      errorEl.classList.remove('hidden')
+      errorEl.classList.remove(hiddenClass)
     } catch {
       errorEl.textContent = labels.errorGeneric
-      errorEl.classList.remove('hidden')
+      errorEl.classList.remove(hiddenClass)
     } finally {
       inFlight = false
       submitBtn.disabled = false

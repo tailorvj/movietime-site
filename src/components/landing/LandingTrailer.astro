@@ -1,0 +1,23 @@
+---
+import trailerImg from '../../assets/images/landing/trailer-video-mockup.png'
+import type { Locale } from '../../i18n'
+import { messages } from '../../i18n'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = messages(locale)
+---
+
+<section class="landing-trailer" aria-label={t.landing.trailerLabel}>
+  <img
+    class="landing-trailer__img"
+    src={trailerImg.src}
+    width={trailerImg.width}
+    height={trailerImg.height}
+    alt={t.landing.trailerAlt}
+    loading="lazy"
+  />
+</section>
